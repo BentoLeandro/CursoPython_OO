@@ -1,4 +1,7 @@
-class Programa:
+from abc import ABCMeta, abstractmethod
+#abs = Abstract Base Classes
+
+class Programa(metaclass = ABCMeta):
     def __init__(self, nome, ano):
         self._nome = nome.title()
         self.ano = ano
@@ -20,6 +23,7 @@ class Programa:
         self._likes += 1    
 
     #metodo especial para representar de forma textual o objeto
+    @abstractmethod
     def __str__(self):
         return f'{self._nome} - {self.ano} - {self._likes} likes'    
 
@@ -46,11 +50,7 @@ class Playlist:
     
     def __getitem__(self, item):
         return self._programas[item] 
-
-    @property
-    def listagem(self):
-        return self._programas
-
+    
     def __len__(self):
         return len(self._programas)    
 
