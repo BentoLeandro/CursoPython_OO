@@ -43,17 +43,53 @@ class ExtratorURL:
             indice_e_comercial = len(self.get_url_parametros())
         valor = self.get_url_parametros()[indice_valor:indice_e_comercial]
         return valor
+
+    @staticmethod
+    def calcula_conversao(qtde, cotacao_dolar, operador):
+        resultado = 0
+        if operador == 'div':
+            resultado = qtde / cotacao_dolar
+        elif operador == 'mul':
+            resultado = qtde * cotacao_dolar    
+        
+        return resultado    
+
+
+    def __len__(self):
+        return len(self.url)    
+
+    def __str__(self):
+        return self.url+"\n"+"URL Base.: "+self.get_url_base()+"\n"+"Parâmetros.: "+self.get_url_parametros()
+
+    def __eq__(self, other):
+        return self.url == other.url        
                                                   
 
-url = ExtratorURL("https://bytebank.com/cambio?moedaOrigem=real&moedaDestino=dolar&quantidade=100")
+url = ExtratorURL("https://bytebank.com/cambio?moedaOrigem=dolar&moedaDestino=real&quantidade=100")
+url2 = ExtratorURL("https://bytebank.com/cambio?moedaOrigem=real&moedaDestino=dolar&quantidade=100")
 #parametros = url.get_url_parametros()
 #print(parametros)
-valor_qtde = url.get_valor_parametro("quantidade")
+valor_qtde = float(url.get_valor_parametro("quantidade"))
 print(valor_qtde)
 
 moedaOrigem = url.get_valor_parametro("moedaOrigem")
 print(moedaOrigem)
 
+moedaDestino = url.get_valor_parametro("moedaDestino")
+print(moedaDestino)
+
+if moedaOrigem == 'real' and moedaDestino == 'dolar':
+    valor = url.calcula_conversao(valor_qtde, 5.50, 'div')
+elif moedaOrigem == 'dolar' and moedaDestino == 'real':
+    valor = url.calcula_conversao(valor_qtde, 5.50, 'mul')     
+
+print()
+print(f'Valor convertido.: {valor}')
+
+
+print(f"O tamanho da URL é.: {len(url)}")
+print(url)
+print(url == url2)
 
 import re # Regular Expression - RegEx
 endereco = "Rua Serra da Paranapiacaba, nº 189, Adriano Correa, Apucarana - PR, 86813-220"
